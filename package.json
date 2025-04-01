@@ -1,9 +1,14 @@
 {
 	"name": "cloudflare-workers-oauth",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"private": true,
+  "author": {
+    "name": "maonianyou",
+    "email": "maonianyou@gmail.com"
+  },
 	"scripts": {
-		"deploy": "wrangler deploy",
+		"build": "node esbuild.config.js",
+		"deploy": "npm run build && wrangler deploy",
 		"dev": "wrangler dev",
 		"start": "wrangler dev",
 		"test": "vitest",

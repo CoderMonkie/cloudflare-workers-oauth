@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Cloudflare Worker",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "wrangler",
+      "runtimeArgs": ["dev"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "sourceMaps": true,
+      // "preLaunchTask": "npm: build" // 如果有构建任务可以添加
+    }
+  ]
+}
