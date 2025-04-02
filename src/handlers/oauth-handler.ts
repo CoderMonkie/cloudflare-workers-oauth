@@ -92,7 +92,7 @@ export class OAuthHandler {
       const oauthProvider = this.oauthService.getProvider(providerId);
       const tokenResponse = await oauthProvider.getAccessToken(code);
       const { access_token, token_type } = tokenResponse;
-			const userProfile = await oauthProvider.getUserProfile(`${token_type} ${access_token}`);
+      const userProfile = await oauthProvider.getUserProfile(`${token_type} ${access_token}`);
 
       // 在用户资料中添加应用ID信息
       const enhancedUserProfile = {
@@ -105,7 +105,7 @@ export class OAuthHandler {
 
       return new Response(
         `<script nonce="${nonce}">
-          window.opener.postMessage({token: "${access_token}", userProfile: ${JSON.stringify(enhancedUserProfile)}}, "*");
+          window.opener.postMessage({eventType: 'oauth_success', token: "${access_token}", userProfile: ${JSON.stringify(enhancedUserProfile)}}, "*");
           window.close();
         </script>`,
         {
