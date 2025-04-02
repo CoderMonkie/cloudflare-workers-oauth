@@ -2,10 +2,12 @@
 	"name": "cloudflare-workers-oauth",
 	"version": "0.1.0",
 	"private": true,
-  "author": {
-    "name": "maonianyou",
-    "email": "maonianyou@gmail.com"
-  },
+	"license": "MIT",
+	"description": "A unified OAuth 2.0 gateway for Cloudflare Workers that enables multiple applications to integrate with various third-party authentication providers through a single deployment.",
+	"author": {
+		"name": "maonianyou",
+		"email": "maonianyou@gmail.com"
+	},
 	"scripts": {
 		"build": "node esbuild.config.js",
 		"deploy": "npm run build && wrangler deploy",
