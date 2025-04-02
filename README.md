@@ -2,6 +2,17 @@
 
 这是一个基于 Cloudflare Workers 的 OAuth 认证服务，支持多个应用使用不同的 OAuth 配置。
 
+## 线上应用示例
+
+应用：[Palm Docs](https://palmdocs.gocheers.fun)
+
+这里约定给 workers 区分应用的编码为`palmdocs`，所以：
+
+- Github登录的地址为：https://oauth.gocheers.fun/app/palmdocs/login/github
+- Google登录地址为：https://oauth.gocheers.fun/app/palmdocs/login/google
+
+> 其中域名为我自己的域名，你如果没有绑定域名，默认就是 cloudflare 分配的域名，它的地址格式是 `https://your-worker-name.your-CF-user-name.workers.dev`
+
 ## 功能特点
 
 - 支持多个应用使用不同的 OAuth 提供商配置
@@ -64,7 +75,7 @@ window.open(
 );
 ```
 
-2. 在回调页面中，接收OAuth认证结果：
+2. 在调`window.open`的页面中，接收OAuth认证结果：
 
 ```javascript
 window.addEventListener('message', (event) => {
@@ -80,6 +91,8 @@ window.addEventListener('message', (event) => {
 可以在 `app-config.ts` 文件中修改应用配置，包括允许的来源、重定向URI等。
 
 ## 开发与部署
+
+0. 将本项目 fork 到自己的 GitHub 仓库，然后将项目 clone 到本地。
 
 1. 安装依赖：
 
@@ -109,3 +122,5 @@ npm run dev
 ```bash
 npm run deploy
 ```
+
+如果本仓库对你有所帮助，麻烦给个 Star 支持一下。

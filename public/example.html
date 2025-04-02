@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OAuth 回调处理示例</title>
+</head>
+<body>
+  <div style="text-align: center; margin-top: 2rem;">
+    <h2>OAuth 回调处理代码示例</h2>
+    <p>线上demo示例可参考：<a href="https://palmdocs.gocheers.fun">Palm Docs</a></p>
+    <p>
+      本示例展示了如何处理 OAuth 回调。
+      请在浏览器中打开此页面，然后点击“使用 GitHub 登录”按钮。
+      然后，您将被重定向到 GitHub 的 OAuth 授权页面。
+      完成授权后，您将被重定向回本页面，并在控制台中看到回调处理的结果。
+    </p>
+    <button
+      style="
+        padding: 12px 24px;
+        font-size: 1.1rem;
+        background: #4285f4;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      "
+      onmouseover="this.style.opacity='0.8'"
+      onmouseout="this.style.opacity='1'"
+      onclick="handleLoginButtonClick()"
+    >
+      使用 GitHub 登录
+    </button>
+  </div>
+
+  <div>
+    <h2>Result:</h2>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    // 新增登录按钮点击处理
+    function handleLoginButtonClick() {
+      const width = 640;
+      const height = 800;
+      const left = screen.width / 2 - width / 2;
+      const top = screen.height / 2 - height / 2;
+
+      window.open(
+        `https://oauth.gocheers.fun/app/palmdocs/login/github`,
+        'OAuth Login',
+        `toolbar=no,menubar=no,width=${width},height=${height},top=${top},left=${left}`
+      );
+    }
+
+    // 监听来自弹出窗口的消息
+    window.addEventListener('message', function(event) {
+      // 安全验证：检查来源是否可信
+      // if (event.origin !== 'https://your-app-domain.com') return;
+
+      // 通过eventType字段识别不同事件
+      switch (event.data?.eventType) {
+        case 'oauth_success':
+          console.log('OAuth登录成功:', event.data.userProfile);
+          // 处理登录成功逻辑
+          handleOAuthSuccess(event.data.token, event.data.userProfile);
+          break;
+
+        // 可扩展其他事件类型
+        default:
+          console.log('未知事件类型:', event.data);
+      }
+    });
+
+    function handleOAuthSuccess(token, userProfile) {
+      // 实现获取用户信息后的处理逻辑
+      console.log('访问令牌:', token);
+      console.log('用户资料:', userProfile);
+      // 例如：更新UI、跳转页面等
+
+      document.getElementById('result').innerText = JSON.stringify(userProfile);
+    }
+
+    // 最佳实践说明：
+    // 1. 始终验证event.origin确保来源可信
+    // 2. 使用明确的事件类型字段进行路由
+    // 3. 为不同事件类型建立独立处理函数
+    // 4. 添加完备的错误处理逻辑
+  </script>
+</body>
+</html>
