@@ -1,4 +1,5 @@
-import { OAuthService, OAuthProviderType } from '../services/oauth-service';
+import { OAuthService } from '../services/oauth-service';
+import type { OAuthProviderType } from '../types/oauth';
 
 export class OAuthHandler {
   private readonly oauthService: OAuthService;

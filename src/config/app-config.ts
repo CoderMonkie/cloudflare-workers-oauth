@@ -3,7 +3,7 @@
  * 用于管理不同应用的OAuth配置
  */
 
-import { OAuthConfig } from '../types/oauth';
+import type { OAuthConfig } from '../types/oauth';
 
 // 应用配置接口
 export interface AppConfig {
@@ -20,6 +20,8 @@ export interface AppEnv {
   // PalmWriter的GitHub OAuth配置
   PALMDOCS_GITHUB_CLIENT_ID: string;
   PALMDOCS_GITHUB_CLIENT_SECRET: string;
+  PALMDOCS_GOOGLE_CLIENT_ID: string;
+  PALMDOCS_GOOGLE_CLIENT_SECRET: string;
 
   // 应用1的GitHub OAuth配置
   APP1_GITHUB_CLIENT_ID?: string;
@@ -129,6 +131,11 @@ export class AppConfigManager {
             clientId: env.PALMDOCS_GITHUB_CLIENT_ID,
             clientSecret: env.PALMDOCS_GITHUB_CLIENT_SECRET,
             redirectUri: `${origin}/app/palmdocs/callback/github`,
+          },
+          google: {
+            clientId: env.PALMDOCS_GOOGLE_CLIENT_ID,
+            clientSecret: env.PALMDOCS_GOOGLE_CLIENT_SECRET,
+            redirectUri: `${origin}/app/palmdocs/callback/google`,
           }
         }
       });

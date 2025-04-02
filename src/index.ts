@@ -1,6 +1,7 @@
 import { OAuthService } from './services/oauth-service';
 import { AppConfigManager, AppEnv } from './config/app-config';
 import { RouterHandler } from './handlers/router-handler';
+import type { OAuthProviderType } from './types/oauth';
 
 // 扩展Env接口以支持多应用配置
 interface Env extends AppEnv {
@@ -32,10 +33,10 @@ export default {
         const providerId = `${appConfig.id}_${provider}`;
 
         // 注册OAuth提供商
-        oauthService.registerProvider(provider as 'github', config, providerId);
+        oauthService.registerProvider(provider as OAuthProviderType, config, providerId);
 
         // 在OAuthHandler中注册应用ID与提供商ID的映射
-        oauthHandler.registerAppProvider(appConfig.id, provider as 'github', providerId);
+        oauthHandler.registerAppProvider(appConfig.id, provider as OAuthProviderType, providerId);
       });
     });
 

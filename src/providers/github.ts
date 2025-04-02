@@ -1,13 +1,25 @@
 import { OAuthConfig, OAuthProvider, OAuthTokenResponse, UserProfile } from '../types/oauth';
 
 // 定义 GitHub API 返回的用户数据结构
-interface GitHubUserResponse {
+export interface GitHubProfileFields {
   id: number;
   login: string;
   name: string;
   email: string;
   avatar_url: string;
-  // 可以根据需要添加更多 GitHub API 返回的字段
+  node_id: string;
+  //
+  html_url: string | null;
+  bio: string | null;
+  location: string | null;
+  company: string | null;
+  blog: string | null;
+  twitter_username: string | null;
+  created_at: string;
+  updated_at: string;
+  public_repos: number;
+  followers: number;
+  following: number;
 }
 
 export class GitHubOAuthProvider implements OAuthProvider {
@@ -68,8 +80,9 @@ export class GitHubOAuthProvider implements OAuthProvider {
     const response = await fetch(this.userApiUrl, {
       headers: {
         'Authorization': accessToken,
-        'Accept': 'application/json',
+        'Accept': 'application/json; charset=utf-8',
         'User-Agent': 'Cloudflare-Workers-OAuth',
+        'Content-Type': 'application/json; charset=utf-8',
       },
     });
 
@@ -77,7 +90,7 @@ export class GitHubOAuthProvider implements OAuthProvider {
       throw new Error(`Failed to get user profile: ${response.statusText}`);
     }
 
-    const data = await response.json() as GitHubUserResponse;
+    const data = await response.json() as GitHubProfileFields;
     return {
       id: data.id.toString(),
       account: data.login,
@@ -85,6 +98,18 @@ export class GitHubOAuthProvider implements OAuthProvider {
       email: data.email,
       avatar: data.avatar_url,
       provider: 'github',
+      //
+      bio: data.bio,  // 用户简介
+      location: data.location || null,  // 地理位置
+      company: data.company || null,  // 公司
+      blog: data.blog || null,  // 个人网站
+      html_url: data.html_url,  // 用户主页
+      twitter_username: data.twitter_username || null,  // Twitter用户名
+      created_at: data.created_at,  // 账号创建时间
+      updated_at: data.updated_at,  // 账号更新时间
+      public_repos: data.public_repos || 0,  // 公开仓库数
+      followers: data.followers || 0,  // 粉丝数
+      following: data.following || 0,  // 关注数
     };
   }
 }

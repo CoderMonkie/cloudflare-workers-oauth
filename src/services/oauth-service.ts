@@ -1,7 +1,6 @@
-import { OAuthConfig, OAuthProvider } from '../types/oauth';
+import type { OAuthConfig, OAuthProvider, OAuthProviderType } from '../types/oauth';
 import { GitHubOAuthProvider } from '../providers/github';
-
-export type OAuthProviderType = 'github';
+import { GoogleOAuthProvider } from '../providers/google';
 
 export class OAuthService {
   private providers: Map<string, OAuthProvider>;
@@ -22,6 +21,9 @@ export class OAuthService {
     switch (type) {
       case 'github':
         this.providers.set(id, new GitHubOAuthProvider(config));
+        break;
+      case 'google':
+        this.providers.set(id, new GoogleOAuthProvider(config));
         break;
       default:
         throw new Error(`Unsupported OAuth provider type: ${type}`);

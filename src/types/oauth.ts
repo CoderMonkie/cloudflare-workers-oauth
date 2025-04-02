@@ -1,3 +1,8 @@
+import { GitHubProfileFields } from "../providers/github";
+import { GoogleProfileFields } from "../providers/google";
+
+export type OAuthProviderType = 'github' | 'google';
+
 /**
  * OAuth 提供商的配置接口
  */
@@ -17,17 +22,22 @@ export interface OAuthTokenResponse {
   scope?: string;
 }
 
-/**
- * 用户信息接口
- */
-export interface UserProfile {
-  id: string;
+interface CommonUserProfile {
+  id: string|number;
   name: string;
   account: string;
-  email?: string;
-  avatar?: string;
+  email: string;
+  avatar?: string | null;
   provider: string;
 }
+
+/**
+ * 用户信息
+ */
+// 移除重复的GoogleProfileFields定义
+export type UserProfile = CommonUserProfile & (Partial<GitHubProfileFields> | Partial<GoogleProfileFields>) & {
+  [key: string]: any;
+};
 
 /**
  * OAuth 提供商接口

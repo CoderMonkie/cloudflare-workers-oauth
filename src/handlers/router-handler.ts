@@ -1,6 +1,7 @@
 import { OAuthHandler } from './oauth-handler';
 import { AppConfigManager } from '../config/app-config';
-import { OAuthService, OAuthProviderType } from '../services/oauth-service';
+import { OAuthService } from '../services/oauth-service';
+import type {OAuthProviderType}from '../types/oauth';
 
 export class RouterHandler {
   private readonly appConfigManager: AppConfigManager;
