@@ -22,6 +22,12 @@ export interface AppEnv {
   PALMDOCS_GITHUB_CLIENT_SECRET: string;
   PALMDOCS_GOOGLE_CLIENT_ID: string;
   PALMDOCS_GOOGLE_CLIENT_SECRET: string;
+  PALMDOCS_DINGTALK_CLIENT_ID: string;
+  PALMDOCS_DINGTALK_CLIENT_SECRET: string;
+  PALMDOCS_QQ_CLIENT_ID: string;
+  PALMDOCS_QQ_CLIENT_SECRET: string;
+  PALMDOCS_GITEE_CLIENT_ID: string;
+  PALMDOCS_GITEE_CLIENT_SECRET: string;
 
   // 应用1的GitHub OAuth配置
   APP1_GITHUB_CLIENT_ID?: string;
@@ -125,7 +131,7 @@ export class AppConfigManager {
       manager.registerApp({
         id: 'palmdocs',
         name: 'Palm Docs',
-        allowedOrigins: ['http://localhost:5180', 'http://localhost:4173', 'https://palmdocs.gocheers.fun'],
+        allowedOrigins: ['http://localhost:5180', 'http://localhost:4173', 'http://127.0.0.1:8787', 'https://palmdocs.gocheers.fun'],
         oauthProviders: {
           github: {
             clientId: env.PALMDOCS_GITHUB_CLIENT_ID,
@@ -136,7 +142,26 @@ export class AppConfigManager {
             clientId: env.PALMDOCS_GOOGLE_CLIENT_ID,
             clientSecret: env.PALMDOCS_GOOGLE_CLIENT_SECRET,
             redirectUri: `${origin}/app/palmdocs/callback/google`,
-          }
+          },
+          dingtalk: {
+            clientId: env.PALMDOCS_DINGTALK_CLIENT_ID,
+            clientSecret: env.PALMDOCS_DINGTALK_CLIENT_SECRET,
+            redirectUri: `${origin}/app/palmdocs/callback/dingtalk`,
+            scope: ['Contact.User.mobile', 'Contact.User.Read'],
+          },
+          qq: {
+            clientId: env.PALMDOCS_QQ_CLIENT_ID,
+            clientSecret: env.PALMDOCS_QQ_CLIENT_SECRET,
+            redirectUri: `${origin}/app/palmdocs/callback/qq`,
+            scope: ['get_user_info'],
+          },
+          gitee: {
+            clientId: env.PALMDOCS_GITEE_CLIENT_ID,
+            clientSecret: env.PALMDOCS_GITEE_CLIENT_SECRET,
+            redirectUri: `${origin}/app/palmdocs/callback/gitee`,
+            // 添加 emails scope 以获取邮箱权限
+            scope: ['user_info', 'emails'],
+          },
         }
       });
     }
@@ -157,8 +182,8 @@ export class AppConfigManager {
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie',
         'Access-Control-Allow-Credentials': 'true',
-				"Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'",
-				"X-Content-Type-Options": "nosniff",
+				// "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'",
+				// "X-Content-Type-Options": "nosniff",
 				"Referrer-Policy": "strict-origin-when-cross-origin",
       };
     }

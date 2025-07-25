@@ -55,12 +55,14 @@ export class GitHubOAuthProvider implements OAuthProvider {
     });
 
     try {
-      const response = await fetch(`${this.tokenUrl}?${params.toString()}`, {
+      const response = await fetch(`${this.tokenUrl}`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'User-Agent': 'Cloudflare-Workers-OAuth',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
+        body:params.toString(),
       });
 
       if (!response.ok) {
@@ -76,10 +78,11 @@ export class GitHubOAuthProvider implements OAuthProvider {
     }
   }
 
-  async getUserProfile(accessToken: string): Promise<UserProfile> {
+  async getUserProfile(tokenResponse: OAuthTokenResponse): Promise<UserProfile> {
+    const { access_token, token_type } = tokenResponse;
     const response = await fetch(this.userApiUrl, {
       headers: {
-        'Authorization': accessToken,
+        'Authorization': `${token_type} ${access_token}`,
         'Accept': 'application/json; charset=utf-8',
         'User-Agent': 'Cloudflare-Workers-OAuth',
         'Content-Type': 'application/json; charset=utf-8',

@@ -78,7 +78,7 @@ export class OAuthHandler {
     const code = url.searchParams.get('code');
     const state = url.searchParams.get('state');
 
-    if (!code || !state) {
+    if (!code) {
       return new Response('Missing code or state', { status: 400 });
     }
 
@@ -89,10 +89,14 @@ export class OAuthHandler {
         return new Response(`Provider not found for app: ${appId}`, { status: 404 });
       }
 
-      const oauthProvider = this.oauthService.getProvider(providerId);
-      const tokenResponse = await oauthProvider.getAccessToken(code);
-      const { access_token, token_type } = tokenResponse;
-      const userProfile = await oauthProvider.getUserProfile(`${token_type} ${access_token}`);
+    const oauthProvider = this.oauthService.getProvider(providerId);
+    const tokenResponse = await oauthProvider.getAccessToken(code);
+
+      // 将整个 tokenResponse 传递给 getUserProfile 方法，由各提供商自行处理
+      const userProfile = await oauthProvider.getUserProfile(tokenResponse);
+
+      // 提取 access_token，优先使用标准格式，兼容不同提供商的命名方式
+      const access_token = tokenResponse.access_token || tokenResponse.accessToken;
 
       // 在用户资料中添加应用ID信息
       const enhancedUserProfile = {

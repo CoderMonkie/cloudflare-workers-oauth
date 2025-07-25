@@ -1,6 +1,6 @@
 {
 	"name": "cloudflare-workers-oauth",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"private": true,
 	"license": "MIT",
 	"description": "A unified OAuth 2.0 gateway for Cloudflare Workers that enables multiple applications to integrate with various third-party authentication providers through a single deployment.",
@@ -11,8 +11,8 @@
 	"scripts": {
 		"build": "node esbuild.config.js",
 		"deploy": "npm run build && wrangler deploy",
+		"predev": "npm run build",
 		"dev": "wrangler dev",
-		"start": "wrangler dev",
 		"test": "vitest",
 		"cf-typegen": "wrangler types"
 	},

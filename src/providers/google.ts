@@ -53,15 +53,15 @@ export class GoogleOAuthProvider implements OAuthProvider {
       const response = await fetch(this.tokenUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json'
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          'Accept': 'application/json',
         },
-        body: params
+        body: JSON.stringify(params),
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(`Google OAuth error: ${(error as { error_description?: string }).error_description}`);
+        const errorData = await response.json().catch(() => null);
+        throw new Error(`Failed to exchange token: ${response.status} ${response.statusText} ${JSON.stringify(errorData)}`);
       }
 
       return response.json();
@@ -71,10 +71,10 @@ export class GoogleOAuthProvider implements OAuthProvider {
     }
   }
 
-  async getUserProfile(accessToken: string): Promise<UserProfile> {
+  async getUserProfile(tokenResponse: OAuthTokenResponse): Promise<UserProfile> {
     const response = await fetch(this.userApiUrl, {
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${tokenResponse.access_token!}`,
         'Accept': 'application/json; charset=utf-8',
         'Content-Type': 'application/json; charset=utf-8'
       }

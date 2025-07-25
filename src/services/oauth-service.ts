@@ -1,6 +1,9 @@
 import type { OAuthConfig, OAuthProvider, OAuthProviderType } from '../types/oauth';
 import { GitHubOAuthProvider } from '../providers/github';
 import { GoogleOAuthProvider } from '../providers/google';
+import { DingTalkOAuthProvider } from '../providers/dingtalk';
+import { QQOAuthProvider } from '../providers/qq';
+import { GiteeOAuthProvider } from '../providers/gitee';
 
 export class OAuthService {
   private providers: Map<string, OAuthProvider>;
@@ -24,6 +27,15 @@ export class OAuthService {
         break;
       case 'google':
         this.providers.set(id, new GoogleOAuthProvider(config));
+        break;
+      case 'dingtalk':
+        this.providers.set(id, new DingTalkOAuthProvider(config));
+        break;
+      case 'qq':
+        this.providers.set(id, new QQOAuthProvider(config));
+        break;
+      case 'gitee':
+        this.providers.set(id, new GiteeOAuthProvider(config));
         break;
       default:
         throw new Error(`Unsupported OAuth provider type: ${type}`);

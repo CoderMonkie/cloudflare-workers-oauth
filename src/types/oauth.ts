@@ -1,7 +1,9 @@
 import { GitHubProfileFields } from "../providers/github";
 import { GoogleProfileFields } from "../providers/google";
+import { DingTalkProfileFields } from "../providers/dingtalk";
+import { GiteeProfileFields } from "../providers/gitee";
 
-export type OAuthProviderType = 'github' | 'google';
+export type OAuthProviderType = 'github' | 'google' | 'dingtalk' | 'qq' | 'gitee';
 
 /**
  * OAuth 提供商的配置接口
@@ -14,16 +16,50 @@ export interface OAuthConfig {
 }
 
 /**
- * OAuth 认证响应数据
+ * 各平台 OAuth 认证响应数据
  */
-export interface OAuthTokenResponse {
+export interface GitHubOAuthTokenResponse {
   access_token: string;
   token_type: string;
   scope?: string;
 }
 
-interface CommonUserProfile {
-  id: string|number;
+export interface GoogleOAuthTokenResponse {
+  access_token: string;
+  expires_in: number;
+  refresh_token?: string;
+  token_type: string;
+  scope?: string;
+}
+
+export interface DingTalkOAuthTokenResponse {
+  accessToken: string;
+  expireIn: number;
+  refreshToken?: string;
+}
+
+export interface QQOAuthTokenResponse {
+  access_token: string;
+  expires_in: number;
+  refresh_token?: string;
+}
+
+export interface GiteeOAuthTokenResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  refresh_token?: string;
+  scope?: string;
+  created_at: number;
+}
+
+/**
+ * OAuth 认证响应数据联合类型
+ */
+export type OAuthTokenResponse = Partial<GitHubOAuthTokenResponse> & Partial<GoogleOAuthTokenResponse> & Partial<DingTalkOAuthTokenResponse> & Partial<QQOAuthTokenResponse> & Partial<GiteeOAuthTokenResponse>;
+
+export interface CommonUserProfile {
+  id: string | number;
   name: string;
   account: string;
   email: string;
@@ -34,8 +70,7 @@ interface CommonUserProfile {
 /**
  * 用户信息
  */
-// 移除重复的GoogleProfileFields定义
-export type UserProfile = CommonUserProfile & (Partial<GitHubProfileFields> | Partial<GoogleProfileFields>) & {
+export type UserProfile = CommonUserProfile & (Partial<GitHubProfileFields> | Partial<GoogleProfileFields> | Partial<DingTalkProfileFields> | Partial<GiteeProfileFields>) & {
   [key: string]: any;
 };
 
@@ -57,7 +92,7 @@ export interface OAuthProvider {
 
   /**
    * 获取用户信息
-   * @param accessToken 访问令牌
+   * @param tokenResponse 访问令牌响应
    */
-  getUserProfile(accessToken: string): Promise<UserProfile>;
+  getUserProfile(tokenResponse: OAuthTokenResponse): Promise<UserProfile>;
 }

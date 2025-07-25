@@ -32,6 +32,7 @@
 		// 我的环境变量示例 - 只包含非敏感信息
 		"PALMDOCS_GITHUB_CLIENT_ID": "Ov23li3oQMkrY2zJrtOR",
 		"PALMDOCS_GOOGLE_CLIENT_ID": "635424509064-mnfm9kja0e8ktifpqosb53u0b6bgnnmq.apps.googleusercontent.com",
+		"PALMDOCS_GITEE_CLIENT_ID": "5b6377965ab94b7e10862d45076badd999843bab962ee0d74125ce4f82e08bc9",
 
 		// 应用1的环境变量示例 - 只包含非敏感信息
 		// "APP1_GITHUB_CLIENT_ID": "your-app1-github-client-id",
